@@ -24,14 +24,15 @@ var bicycle = (function(){
         intWheels = arg
     }
 
-    return {
+    // The object you return here can be frozen to ensure it can't be modified with additional properties.
+    return Object.freeze({
         getWheels(){
             return intWheels
         },
         modify(arg){
             setWheels(arg)
         }
-    }
+    })
 })()
 
 
@@ -54,3 +55,41 @@ const makeBike = function(){
 
 const secondBike = makeBike()
 const thirdBike = makeBike()
+
+// Let's move on to some other stuff like "this"
+// This is the global window most of the time 
+// log(this);
+
+// When its in a function at the top level it refers to the window.
+function letsTryThis(){
+    var test = 'hello'
+    log(this)
+}
+letsTryThis();
+
+
+// Now this refers to what's in the brackets.
+var letsTryThisAgain = {
+    test: true,
+    getThis(){
+        log(this)
+    }
+}
+
+letsTryThisAgain.getThis() // now its referrign to whats in the brackets
+
+var unboundGetThis = letsTryThisAgain.getThis
+
+var anotherPlaceToBindAHome = {
+    notTest: false,
+    getThis(){
+        log(this)
+    }
+}
+
+// In this case, we can pull a function out from one spot, and bind it to a new home. It's kinda wild.
+var newlyBoundGetThis = unboundGetThis.bind(anotherPlaceToBindAHome)
+newlyBoundGetThis()
+
+
+
